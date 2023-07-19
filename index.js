@@ -55,3 +55,4 @@ function mostrarPokemon(poke) {
                   </div>
 
                   </div>
+                  */
