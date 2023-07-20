@@ -107,3 +107,9 @@ const filterPokemon = async (event, maxQuery) => {
 chargePokemons(151);
 // Activa la función de filtrado de los botones
 headerButtons.forEach(boton => boton.addEventListener('click', event => filterPokemon(event, 151)));
+
+/* Funciones requeridas faltantes => {
+    -agregar event click a las tarjetas para desplegar mas información acerca del pokemon
+    -agregar un buscador utilizando un metodo filter que pueda desplegar la misma funcionalidad de los botones
+}
+*/
