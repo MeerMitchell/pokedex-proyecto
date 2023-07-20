@@ -8,12 +8,20 @@ let URL = "https://pokeapi.co/api/v2/pokemon/";
     
 // }
 
+
+/*
+    Función agregada con el método async-await: propuesta para solucionar el problema de
+    la carga desordenada de los Pokemon. Practicamente ahora solo espera a que carguen los
+    respectivos datos de cada consulta antes de continuar al siguiente.
+    Cuando la solicitud falla solo lanza un error por consola, pero igual se podria agregar
+    un contador que permita volver a reintentar el request.
+*/
 const chargePokemons = async (maxQuery) => {
     try {
         for(let i = 1; i <= maxQuery; i++) {
             const pokemon = await fetch(`${URL}${i}`);
             if(!pokemon.ok) {
-                throw new Error('Error de conexión');
+                throw new Error('Error de transferencia de datos');
             }
             const pokemonJson =  await pokemon.json();
             mostrarPokemon(pokemonJson);
@@ -48,6 +56,7 @@ function mostrarPokemon(poke) {
     listaPokemon.append(div);
 }
 
+//Inicializa la funcion de carga de Pokemon inicial
 chargePokemons(151);
 /*
 <div class="pokemon-todos" id="listaPokemon">
