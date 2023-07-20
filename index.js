@@ -1,11 +1,26 @@
 const listaPokemon = document.querySelector("#listaPokemon");
 let URL = "https://pokeapi.co/api/v2/pokemon/";
 
-for (let i = 1; i <= 151; i++) {
-    fetch(URL + i)
-        .then((response) => response.json())
-        .then(data => mostrarPokemon(data))
+// for (let i = 1; i <= 151; i++) {
+//     fetch(URL + i)
+//         .then((response) => response.json())
+//         .then(data => mostrarPokemon(data))
     
+// }
+
+const chargePokemons = async (maxQuery) => {
+    try {
+        for(let i = 1; i <= maxQuery; i++) {
+            const pokemon = await fetch(`${URL}${i}`);
+            if(!pokemon.ok) {
+                throw new Error('Error de conexión');
+            }
+            const pokemonJson =  await pokemon.json();
+            mostrarPokemon(pokemonJson);
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 function mostrarPokemon(poke) {
@@ -33,6 +48,7 @@ function mostrarPokemon(poke) {
     listaPokemon.append(div);
 }
 
+chargePokemons(151);
 /*
 <div class="pokemon-todos" id="listaPokemon">
            <div class="pokemon">
