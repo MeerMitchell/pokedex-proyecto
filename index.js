@@ -1,6 +1,8 @@
 const listaPokemon = document.querySelector("#listaPokemon");
+const headerButtons = document.querySelectorAll('.btn-header');
 let URL = "https://pokeapi.co/api/v2/pokemon/";
 
+// Función fetch anterior =/=> problema --- carga los elementos en desorden xXx
 // for (let i = 1; i <= 151; i++) {
 //     fetch(URL + i)
 //         .then((response) => response.json())
@@ -16,6 +18,9 @@ let URL = "https://pokeapi.co/api/v2/pokemon/";
     Cuando la solicitud falla solo lanza un error por consola, pero igual se podria agregar
     un contador que permita volver a reintentar el request.
 */
+/*------------------------------------------------------------------------------*/
+/*  Función de carga para inicializar los pokemon                               */
+/*------------------------------------------------------------------------------*/
 const chargePokemons = async (maxQuery) => {
     try {
         for(let i = 1; i <= maxQuery; i++) {
@@ -31,6 +36,9 @@ const chargePokemons = async (maxQuery) => {
     }
 }
 
+/*------------------------------------------------------------------------------*/
+/*  Función de renderizado de tarjetas                                          */
+/*------------------------------------------------------------------------------*/
 function mostrarPokemon(poke) {
 
     let tipos = poke.types.map(type => `<p class="${type.type.name} tipo">${type.type.name}</p>`).join('');
@@ -61,28 +69,41 @@ function mostrarPokemon(poke) {
     listaPokemon.append(div);
 }
 
+/*------------------------------------------------------------------------------*/
+/*  Función para el filtrado de los pokemon con los botones                     */
+/*------------------------------------------------------------------------------*/
+const filterPokemon = async (event, maxQuery) => {
+    const botonId = event.currentTarget.id;
+    // Borra elementos de la lista
+    listaPokemon.innerHTML = '';
+    try {
+        for(let i = 1; i <= maxQuery; i++) {
+            const pokemon = await fetch(`${URL}${i}`);
+            if(!pokemon.ok) {
+                throw new Error('Error de transferencia de datos');
+            }
+            const pokemonJson =  await pokemon.json();
+            
+            // Condicional para los tipos
+            if (botonId === 'ver-todos') {
+                mostrarPokemon(pokemonJson);
+            } else {
+                const tiposPokemon = pokemonJson.types.map(type => type.type.name);
+                if (tiposPokemon.some(tipo => tipo.includes(botonId))) {
+                    mostrarPokemon(pokemonJson);
+                }
+            }
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+/*------------------------------------------------------------------------------*/
+/*  Inicializadores del DOM                                                     */
+/*------------------------------------------------------------------------------*/
+
 //Inicializa la funcion de carga de Pokemon inicial
 chargePokemons(151);
-/*
-<div class="pokemon-todos" id="listaPokemon">
-           <div class="pokemon">
-              <p class="pokemon-id-back">#025</p>
-              <div class="pokemon-imagen">
-                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu">
-              </div>
-              <div class="pokemon-info">
-                  <div class="nombre-contenedor">
-                      <p class="pokemon-id">#025</p>
-                      <h2 class="pokemon-nombre">Pikachu</h2>
-                  </div>
-                  <div class="pokemon-tipos">
-                      <p class="electric tipo">ELECTRIC</p>
-                      <p class="fighting tipo">FIGHTING</p>
-                  </div>
-                  <div class="pokemon-stats">
-                      <p class="stat">4m</p>
-                      <p class="stat">60kg</p>
-                  </div>
-
-                  </div>
-                  */
+// Activa la función de filtrado de los botones
+headerButtons.forEach(boton => boton.addEventListener('click', event => filterPokemon(event, 151)));
