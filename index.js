@@ -34,18 +34,20 @@ const chargePokemons = async (maxQuery) => {
 function mostrarPokemon(poke) {
 
     let tipos = poke.types.map(type => `<p class="${type.type.name} tipo">${type.type.name}</p>`).join('');
-    console.log(tipos);
+
+    // Función que formatea los numeros de tal manera que si: #3 => #003
+    const pokemonID = poke.id.toString().padStart(3, 0);
 
     const div = document.createElement("div");
     div.classList.add("pokemon");
     div.innerHTML = `
-              <p class="pokemon-id-back">#${poke.id}</p>
+              <p class="pokemon-id-back">#${pokemonID}</p>
               <div class="pokemon-imagen">
                   <img src="${poke.sprites.other["official-artwork"].front_default}" alt="${poke.name}">
               </div>
               <div class="pokemon-info">
                   <div class="nombre-contenedor">
-                      <p class="pokemon-id">#${poke.id}</p>
+                      <p class="pokemon-id">#${pokemonID}</p>
                       <h2 class="pokemon-nombre">${poke.name}</h2>
                   </div>
                   <div class="pokemon-tipos">
