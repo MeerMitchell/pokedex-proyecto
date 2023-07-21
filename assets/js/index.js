@@ -2,15 +2,6 @@ const listaPokemon = document.querySelector("#listaPokemon");
 const headerButtons = document.querySelectorAll('.btn-header');
 let URL = "https://pokeapi.co/api/v2/pokemon/";
 
-// Función fetch anterior =/=> problema --- carga los elementos en desorden xXx
-// for (let i = 1; i <= 151; i++) {
-//     fetch(URL + i)
-//         .then((response) => response.json())
-//         .then(data => mostrarPokemon(data))
-    
-// }
-
-
 /*
     Función agregada con el método async-await: propuesta para solucionar el problema de
     la carga desordenada de los Pokemon. Practicamente ahora solo espera a que carguen los

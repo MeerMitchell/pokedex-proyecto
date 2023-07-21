@@ -11,7 +11,23 @@
 <body>
   <header>
     <nav class="nav">
-      <h1>Pokedex</h1>
+      <div class="container-block">
+        <h1>Pokedex</h1>
+        <form id="pokemon-searcher">
+          <input type="text" placeholder="Buscar Pokémon">
+          <div class="searcher-filters">
+            <p>Filtros</p>
+            <button id="open-filters"></button>
+            <div class="filters-box">
+              <p>Buscar por:</p>
+              <label for="forPokemon">Pokémon</label>
+              <input type="checkbox" id="forPokemon">
+              <label for="forTypes">Pokémon</label>
+              <input type="checkbox" id="forTypes">
+            </div>
+          </div>
+        </form>
+      </div>
     <div id="container"></div>
     <ul class="nav-list">
       <li class="nav-item"><button class="btn btn-header" id="ver-todos">Ver todos</button></li> 
