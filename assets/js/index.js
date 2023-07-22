@@ -188,6 +188,5 @@ headerButtons.forEach(boton => boton.addEventListener('click', event => filterPo
 
 /* Funciones requeridas faltantes => {
     -agregar event click a las tarjetas para desplegar mas información acerca del pokemon
-    -agregar un buscador utilizando un metodo filter que pueda desplegar la misma funcionalidad de los botones
 }
 */
