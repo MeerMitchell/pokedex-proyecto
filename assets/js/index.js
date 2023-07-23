@@ -1,6 +1,10 @@
+/* Variante CÓDIGO que utiliza llamados a la API constantemente --- primera versión */
+
+/* Variables globales y de entorno */
 const listaPokemon = document.querySelector("#listaPokemon");
 const headerButtons = document.querySelectorAll('.btn-header');
 let URL = "https://pokeapi.co/api/v2/pokemon/";
+const numbPokemon = 151;
 
 /*
     Función agregada con el método async-await: propuesta para solucionar el problema de
@@ -12,7 +16,7 @@ let URL = "https://pokeapi.co/api/v2/pokemon/";
 /*------------------------------------------------------------------------------*/
 /*  Función de carga para inicializar los pokemon                               */
 /*------------------------------------------------------------------------------*/
-const chargePokemons = async (maxQuery) => {
+const requestPokemon = async (maxQuery) => {
     try {
         for (let i = 1; i <= maxQuery; i++) {
             const pokemon = await fetch(`${URL}${i}`);
@@ -178,7 +182,7 @@ function filterSBPokemon (pokemonArray, input) {
 /*------------------------------------------------------------------------------*/
 
 //Inicializa la funcion de carga de Pokemon inicial
-chargePokemons(151);
+ requestPokemon(151);
 // Inicializa la funcion para las opciones de filtrado del botón
 activeFilterBar();
 // Activa la función de filtrato por medio de la barra de búsqueda
