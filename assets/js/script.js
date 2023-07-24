@@ -1,3 +1,5 @@
+/* Versión de código con un único llamado a la APi --- refactoringBy "TeamSinNombre xXx" */
+
 /* Variable del contenedor de tarjetas global */
 const listaPokemon = document.querySelector("#listaPokemon");
 const headerButtons = document.querySelectorAll('.btn-header');
@@ -178,6 +180,9 @@ const getData = async () => {
     }
 }
 
+/*------------------------------------------------------------------------------*/
+/*  RUNNIG WEB                                                                  */
+/*------------------------------------------------------------------------------*/
 //Inicializa la funcion de carga de Pokemon inicial
 const pokemonSotrage = getData();
 pokemonSotrage.then(pokemonData => {
