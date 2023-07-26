@@ -61,7 +61,7 @@ header {
     gap: 1rem;
     align-items: flex-start;
     padding-inline: 2rem;
-    max-width: 1000px;
+    max-width: 1036px;
     margin: 0 auto;
 }
 
@@ -194,13 +194,24 @@ header {
     margin-bottom: 0.5rem;
 }
 
-.nav-list {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: .5rem;
+/* Swipper JS Start */
+.swiper {
+    width: 100%;
 }
 
+.nav-list {
+    padding: 27px;
+}
+
+.swiper .swiper-slide {
+    display: flex;
+    justify-content: center;
+}
+
+.swiper-slide button {
+    width: 80px;
+}
+/* Swiper JS End */
 .btn-header {
     background-color: var(--clr-gray);
     padding: .5rem;

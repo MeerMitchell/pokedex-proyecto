@@ -1,11 +1,45 @@
 /* Versión de código con un único llamado a la APi --- refactoringBy "TeamSinNombre xXx" */
 
+
+
 /* Variable del contenedor de tarjetas global */
 const listaPokemon = document.querySelector("#listaPokemon");
 const headerButtons = document.querySelectorAll('.btn-header');
 const input = document.querySelector('#inputSearchPokemon');
 
 const MAX_QUERY = 151; //Número de consultas a la APi
+/*------------------------------------------------------------------------------*/
+/*  Slider JS                                                                   */
+/*------------------------------------------------------------------------------*/
+const swiper = new Swiper(".mySwiper", {
+    direction: 'horizontal',
+    spaceBetween: 0,
+    // loop: true,
+    centerSlide: 'true',
+    fade: 'true',
+    grabCursor: 'true',
+    // scrollbar: {
+    //     el: ".swiper-scrollbar",
+    //     hide: true,
+    // },
+    breakpoints: {
+        0: {
+          slidesPerView: 2.2,
+        },
+        330: {
+            slidesPerView: 3.2,
+        },
+        520: {
+          slidesPerView: 5.2,
+        },
+        624: {
+            slidesPerView:6.2,
+        },
+        1000: {
+          slidesPerView: 9.2,
+        }
+      },
+});
 
 /*------------------------------------------------------------------------------*/
 /*  Función para abrir opciones de filtrado en botón de búsqueda                */
@@ -23,10 +57,10 @@ const openFilterOptions = () => {
 const checkValidFilter = ($checkbox_1, $checkbox_2) => {
     if ($checkbox_1.checked || $checkbox_2.checked) {
         return;
-      } else {
+    } else {
         $checkbox_1.checked = true;
         return;
-      }
+    }
 }
 
 /*------------------------------------------------------------------------------*/
@@ -121,7 +155,7 @@ const filterButtons = (event, pokemonData) => {
 /*------------------------------------------------------------------------------*/
 // Normalizar input de entrada: (Árbol || árbol || áRbOl) => arbol
 const normalizeInput = (input) => {
-    return  input.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return input.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 const displayPokemonCoincidents = (event, pokemonData) => {
@@ -148,7 +182,7 @@ const filterSBPokemon = (pokemonArray, input) => {
 
     checkboxName.addEventListener('change', checkValidFilter(checkboxName, checkboxNumber));
     checkboxNumber.addEventListener('change', checkValidFilter(checkboxName, checkboxNumber));
-    
+
     const cleanedInput = normalizeInput(input);
     let regularExpresion = new RegExp(cleanedInput, "i"); // Crea una expresión regular para búsqueda.
 
@@ -193,6 +227,6 @@ pokemonSotrage.then(pokemonData => {
     // Activa la función de filtrado de los botones
     headerButtons.forEach(boton => boton.addEventListener('click', event => filterButtons(event, pokemonData)));
 })
-.catch(err => {
-    console.error(`Fail-operation: ${err}`);
-})
+    .catch(err => {
+        console.error(`Fail-operation: ${err}`);
+    })
