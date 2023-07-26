@@ -9,7 +9,7 @@ const input = document.querySelector('#inputSearchPokemon');
 
 const MAX_QUERY = 151; //Número de consultas a la APi
 /*------------------------------------------------------------------------------*/
-/*  Slider JS                                                                   */
+/*  Slider JS --- Funcionalidad de la barra de botones en el header             */
 /*------------------------------------------------------------------------------*/
 const swiper = new Swiper(".mySwiper", {
     direction: 'horizontal',
