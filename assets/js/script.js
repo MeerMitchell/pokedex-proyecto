@@ -24,21 +24,21 @@ const swiper = new Swiper(".mySwiper", {
     // },
     breakpoints: {
         0: {
-          slidesPerView: 2.2,
+            slidesPerView: 2.2,
         },
         330: {
             slidesPerView: 4.2,
         },
         520: {
-          slidesPerView: 5.2,
+            slidesPerView: 5.2,
         },
         624: {
-            slidesPerView:6.2,
+            slidesPerView: 6.2,
         },
         1000: {
-          slidesPerView: 10.2,
+            slidesPerView: 10.2,
         }
-      },
+    },
 });
 
 /*------------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ const displayPokemon = (pokemonData) => {
         const pokemonID = poke.id.toString().padStart(3, 0);
         const template = `
             <div class="pokemon">
-                <p class="pokemon-id-back">#${pokemonID}</p>
+                 <p class="pokemon-id-back">#${pokemonID}</p>
                 <div class="pokemon-imagen">
                     <img src="${poke.sprites.other["official-artwork"].front_default}" alt="${poke.name}">
                 </div>
@@ -103,28 +103,11 @@ const displayPokemon = (pokemonData) => {
 /*------------------------------------------------------------------------------*/
 /*  Función que ealizará las consultas a la API de PokeAPI.                     */
 /*------------------------------------------------------------------------------*/
-const requestPokemon = async (maxQuery) => {
-    // let URL = "https://pokeapi.co/api/v2/pokemon/";
-    // let pokemonRequest = []
-
-    // try {
-    //     for (let i = 1; i <= maxQuery; i++) {
-    //         const pokemon = await fetch(`${URL}${i}`);
-    //         if (!pokemon.ok) {
-    //             throw new Error('Error de transferencia de datos');
-    //         }
-    //         const pokemonJson = await pokemon.json();
-    //         pokemonRequest.push(pokemonJson);
-    //     }
-    //     return pokemonRequest;
-    // } catch (err) {
-    //     console.error(`Something is wrong: ${err}`);
-    // }
+const requestPokemon = async (maxQuery, offset) => {
     let URL = "https://pokeapi.co/api/v2/pokemon/";
-    let pokemonRequest = [];
-  
+    let pokemonRequest = []
+
     try {
-      // Crear un array de promesas usando 'Array.from' y 'fetch'
       const pokemonPromises = Array.from({ length: maxQuery }, (_, i) =>
         fetch(`${URL}${i + 1}`).then((response) => {
           if (!response.ok) {
@@ -133,11 +116,9 @@ const requestPokemon = async (maxQuery) => {
           return response.json();
         })
       );
-  
-      // Esperar a que todas las promesas se resuelvan o se rechacen usando 'Promise.allSettled'
+
       const results = await Promise.allSettled(pokemonPromises);
-  
-      // Procesar los resultados para agregarlos al array 'pokemonRequest'
+
       results.forEach((result) => {
         if (result.status === 'fulfilled') {
           pokemonRequest.push(result.value);
@@ -145,10 +126,10 @@ const requestPokemon = async (maxQuery) => {
           console.error('Error en una de las llamadas fetch:', result.reason);
         }
       });
-  
+
       return pokemonRequest;
     } catch (err) {
-      console.error(`Algo salió mal: ${err}`);
+      console.error(`Something is wrong: ${err}`);
     }
 }
 
@@ -234,10 +215,11 @@ const filterSBPokemon = (pokemonArray, input) => {
 /*------------------------------------------------------------------------------*/
 /*  Función Inicializa los datos de consulta y la data Pokémon.                 */
 /*------------------------------------------------------------------------------*/
-const getData = async () => {
+const getData = async (numQuery = null, offset = 0) => {
+    const query = (numQuery != null) ? numQuery : MAX_QUERY;
+
     try {
-        const pokemonData = await requestPokemon(MAX_QUERY);
-        displayPokemon(pokemonData);
+        const pokemonData = await requestPokemon(query, offset);
         return pokemonData;
     } catch (err) {
         console.log(err);
@@ -248,15 +230,26 @@ const getData = async () => {
 /*  RUNNIG WEB                                                                  */
 /*------------------------------------------------------------------------------*/
 //Inicializa la funcion de carga de Pokemon inicial
-const pokemonSotrage = getData();
-pokemonSotrage.then(pokemonData => {
-    // Inicializa la funcion para las opciones de filtrado del botón
-    openFilterOptions();
-    // Activa la función de filtrato por medio de la barra de búsqueda
-    input.addEventListener('keyup', event => displayPokemonCoincidents(event, pokemonData));
-    // Activa la función de filtrado de los botones
-    headerButtons.forEach(boton => boton.addEventListener('click', event => filterButtons(event, pokemonData)));
+const showPokemon = getData(9);
+showPokemon.then(pokemonData => {
+    displayPokemon(pokemonData);
 })
     .catch(err => {
-        console.error(`Fail-operation: ${err}`);
+        // console.error(`Fail-operation: ${err}`);
+        console.error(err);
     })
+
+setTimeout(() => {
+    const pokemonSotrage = getData();
+    pokemonSotrage.then(pokemonData => {
+        // Inicializa la funcion para las opciones de filtrado del botón
+        openFilterOptions();
+        // Activa la función de filtrato por medio de la barra de búsqueda
+        input.addEventListener('keyup', event => displayPokemonCoincidents(event, pokemonData));
+        // Activa la función de filtrado de los botones
+        headerButtons.forEach(boton => boton.addEventListener('click', event => filterButtons(event, pokemonData)));
+    }).catch(err => {
+            console.error(`Fail-operation: ${err}`);
+    });
+    
+}, 750);
