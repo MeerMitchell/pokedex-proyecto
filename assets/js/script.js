@@ -214,10 +214,17 @@ const getData = async () => {
     }
 }
 
+// Preloader --- NO TERMINADO;
+const preloaderPokeball = (element) => {
+    const preloader = document.querySelector('.preloader-wrapper');
+
+}
+// PRELOADER NO TERMINADO
+
 /*------------------------------------------------------------------------------*/
 /*  RUNNIG WEB                                                                  */
 /*------------------------------------------------------------------------------*/
-//Inicializa la funcion de carga de Pokemon inicial
+// Inicializa la funcion de carga de Pokemon inicial
 const pokemonSotrage = getData();
 pokemonSotrage.then(pokemonData => {
     // Inicializa la funcion para las opciones de filtrado del botón
@@ -226,7 +233,6 @@ pokemonSotrage.then(pokemonData => {
     input.addEventListener('keyup', event => displayPokemonCoincidents(event, pokemonData));
     // Activa la función de filtrado de los botones
     headerButtons.forEach(boton => boton.addEventListener('click', event => filterButtons(event, pokemonData)));
-})
-    .catch(err => {
+}).catch(err => {
         console.error(`Fail-operation: ${err}`);
-    })
+});

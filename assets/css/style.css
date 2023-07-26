@@ -238,6 +238,7 @@ main {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
+    position: relative;
 }
 
 @media screen and (min-width: 470px) {
@@ -340,8 +341,63 @@ main {
     border-radius: 100vmax;
 }
 
+/* Para preloader */
+.preloader-wrapper {
+    position: absolute;
+    top: 25vh;
+    left: 50%;
+   transform: translateX(-50%);
+}
 
+.preloader-wrapper.loaded {
+    display: none;
+}
 
+.pokeball {
+    width: 45px;
+    height: 45px;
+    background-color: #fff;
+    border-radius: 50% ;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid;
+    animation: frames 2.1s  linear 0s infinite;
+  }
+  
+  .pokeball:after{
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    background-color: #fff;
+    border-bottom: 4px solid;
+    top: -12px
+  }
+  
+  .pokeball:before{
+    content: '';
+    position: absolute;
+    background-color: #fff;
+    width: 10px;
+    height:10px;
+    border: 4px solid;
+    border-radius: 50%;
+    bottom: 11px;
+    right: 11px;
+    z-index: 1;
+  }
+  
+  /* AnimationFrames */
+  @keyframes frames{
+    0% {
+      transform: rotate(0deg);
+    }
+    100%{
+      transform: rotate(360deg);
+    }
+  }
+
+/* Para colores según tipo pokémon */
 .normal {
     background-color: var(--type-normal);
     color: var(--clr-black);
