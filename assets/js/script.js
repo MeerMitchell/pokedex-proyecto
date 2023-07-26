@@ -104,21 +104,51 @@ const displayPokemon = (pokemonData) => {
 /*  Función que ealizará las consultas a la API de PokeAPI.                     */
 /*------------------------------------------------------------------------------*/
 const requestPokemon = async (maxQuery) => {
-    let URL = "https://pokeapi.co/api/v2/pokemon/";
-    let pokemonRequest = []
+    // let URL = "https://pokeapi.co/api/v2/pokemon/";
+    // let pokemonRequest = []
 
+    // try {
+    //     for (let i = 1; i <= maxQuery; i++) {
+    //         const pokemon = await fetch(`${URL}${i}`);
+    //         if (!pokemon.ok) {
+    //             throw new Error('Error de transferencia de datos');
+    //         }
+    //         const pokemonJson = await pokemon.json();
+    //         pokemonRequest.push(pokemonJson);
+    //     }
+    //     return pokemonRequest;
+    // } catch (err) {
+    //     console.error(`Something is wrong: ${err}`);
+    // }
+    let URL = "https://pokeapi.co/api/v2/pokemon/";
+    let pokemonRequest = [];
+  
     try {
-        for (let i = 1; i <= maxQuery; i++) {
-            const pokemon = await fetch(`${URL}${i}`);
-            if (!pokemon.ok) {
-                throw new Error('Error de transferencia de datos');
-            }
-            const pokemonJson = await pokemon.json();
-            pokemonRequest.push(pokemonJson);
+      // Crear un array de promesas usando 'Array.from' y 'fetch'
+      const pokemonPromises = Array.from({ length: maxQuery }, (_, i) =>
+        fetch(`${URL}${i + 1}`).then((response) => {
+          if (!response.ok) {
+            throw new Error('Error de transferencia de datos');
+          }
+          return response.json();
+        })
+      );
+  
+      // Esperar a que todas las promesas se resuelvan o se rechacen usando 'Promise.allSettled'
+      const results = await Promise.allSettled(pokemonPromises);
+  
+      // Procesar los resultados para agregarlos al array 'pokemonRequest'
+      results.forEach((result) => {
+        if (result.status === 'fulfilled') {
+          pokemonRequest.push(result.value);
+        } else if (result.status === 'rejected') {
+          console.error('Error en una de las llamadas fetch:', result.reason);
         }
-        return pokemonRequest;
+      });
+  
+      return pokemonRequest;
     } catch (err) {
-        console.error(`Something is wrong: ${err}`);
+      console.error(`Algo salió mal: ${err}`);
     }
 }
 
